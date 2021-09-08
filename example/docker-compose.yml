@@ -25,13 +25,32 @@ services:
     restart: unless-stopped
     ports:
       - "${WIKIBASE_PORT}:80"
+    user: "www-data:www-data"
     volumes:
       - quickstatements-data:/quickstatements/data
       ## This shares the configuration with jobrunner
       - shared:/var/www/html/:rw
 
+      ## Uncomment this next line to enable installation of additional services
+      - ./extra-install.sh:/extra-install.sh
+
       ## Uncomment this next line to mount your own LocalSettings.php file
-      #- ./LocalSettings.php:/var/www/html/LocalSettings.d/LocalSettings.override.php
+      - ./LocalSettings.php:/var/www/html/LocalSettings.d/LocalSettings.override.php
+
+      ## Custom extensions needed to do more with Wikibase.
+      # Import entities.
+      #- ./extensions/WikibaseImport/:/var/www/html/extensions/WikibaseImport
+      #- ./extensions/WikibaseLocalMedia/:/var/www/html/extensions/WikibaseLocalMedia
+
+      # Custom logo for Wikibase.
+      - ./logo/floppy_disk.svg:/var/www/html/assets/logo/wiki.svg
+      - ./logo/favicon.ico:/var/www/html/favicon.ico
+
+      # Custom uploads directory.
+      - ./uploads:/var/www/html/uploads/:rw
+
+      # Override PHP.ini
+      - ./php/php.ini:/usr/local/etc/php/php.ini
 
     networks:
       default:
