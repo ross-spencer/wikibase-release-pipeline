@@ -1,11 +1,38 @@
 <?php
 
+$wgSitename = "Ravensburger Unternehmensarchiv";
+$wgLanguageCode = "en";
+
+/*******************************/
+/* Skins                       */
+/*******************************/
+
+// MobileFrontEnd Enhancements to run
+// Minerva on Mobile only.
+
+wfLoadExtension( 'MobileFrontend' );
+wfLoadSkin( 'MinervaNeue' );
+$wgMFDefaultSkinClass = 'SkinMinerva';
+$wgMinervaAlwaysShowLanguageButton = true;
+
+/*******************************/
+/* Enable page counts          */
+/*******************************/
+
+wfLoadExtension( 'HitCounters' );
+
 /*******************************/
 /* Enable Federated properties */
 /*******************************/
-$wgWBRepoSettings['federatedPropertiesEnabled'] = true;
 
-wfLoadExtension( 'WikibaseImport' );
+$wgWBRepoSettings['federatedPropertiesEnabled'] = false;
+
+// WikibaseImport is buggy in recent installations.
+// We will opt in the meantime to use our own properties
+// and map to Wikidata.
+
+// wfLoadExtension( 'WikibaseImport' );
+
 wfLoadExtension( 'WikibaseLocalMedia' );
 
 /*******************************/
@@ -60,3 +87,24 @@ $wgRCMaxAge = 365 * 24 * 3600;
 /* Disable UI error-reporting  */
 /*******************************/
 #ini_set( 'display_errors', 0 );
+
+/*******************************/
+/* user behavior               */
+/*******************************/
+
+$wgDisableAnonTalk = true;
+
+// Disable anonymous editing.
+$wgGroupPermissions['*']['edit'] = false;
+
+
+// Disable anonymous viewing
+# Disable reading by anonymous users
+#$wgGroupPermissions['*']['read'] = false;
+
+# But allow them to read e.g., these pages:
+#$wgWhitelistRead =  [ "Main Page", "Help:Contents" ];
+
+# Allow Jobs to be run
+#$wgWhitelistRead = [ "Special:RunJobs" ];
+
